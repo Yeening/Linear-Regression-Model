@@ -33,6 +33,11 @@ def stochiastic_gradient_descent(x, y, learning_rate, num_iterations):
     theta = np.zeros((x[1].shape),dtype=float)
     thetas = []
     for j in range(num_iterations):
+        # shuffle the training set
+        total = np.concatenate((x,y), axis = 1) # conbine x and y in the colums
+        np.random.shuffle(total)
+        x = total.T[:2].T
+        y = total.T[-1].T.reshape(-1,1)
         # random smaple
         i = random.randrange(0,x.shape[0],1)
         theta = theta + learning_rate * (y[i] - x[i].T.dot(theta))* x[i]
@@ -57,6 +62,11 @@ def minibatch_gradient_descent(x, y, learning_rate, num_iterations, batch_size):
     thetas = []
     theta = np.zeros((x[1].shape[0],1),dtype=float)
     for j in range(num_iterations):
+        # shuffle the training set
+        total = np.concatenate((x,y), axis = 1) # conbine x and y in the colums
+        np.random.shuffle(total)
+        x = total.T[:2].T
+        y = total.T[-1].T.reshape(-1,1)
         # random smaple
         i = random.randrange(0,x.shape[0],batch_size)
         x_sam = x[i:i+batch_size]
@@ -64,6 +74,7 @@ def minibatch_gradient_descent(x, y, learning_rate, num_iterations, batch_size):
         theta = theta + learning_rate * x_sam.T.dot(y_sam - x_sam.dot(theta))
         thetas.append(theta)
     return thetas
+
 
 # Given an array of x and theta predict y
 def predict(x, theta):

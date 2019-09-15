@@ -2,9 +2,10 @@
 
 ## Numpy
 
-### Initialize
+### Initialize NumPy arrays
 
 ```python
+import numpy as np
 # Initial with range
 square = np.array(range(4)).reshape(2,2)
 # Initial with array
@@ -15,9 +16,10 @@ y = np.array(a)
 thetas = np.zeros(x[1].shape,dtype=float)
 ```
 
-### Square and power
+### Square and power NumPy array elements
 
 ```python
+import numpy as np
 # Square
 arr1 = [1, -3, 15, -466] 
 np.square(arr1) # [1,9,225,217156]
@@ -28,9 +30,10 @@ x2 = [1.0, 2.0, 3.0, 3.0, 2.0, 1.0]
 np.power(x1, x2) # array([  0.,   1.,   8.,  27.,  16.,   5.])
 ```
 
-### Sum
+### Sum of NumPy array elements
 
 ```python
+import numpy as np
 # 1D array  
 arr = [20, 2, .2, 10, 4]  
 print("\nSum of arr : ", np.sum(arr)) # Sum of arr :  36.2
@@ -48,13 +51,30 @@ print("Sum of arr(axis = 1) : ", np.sum(arr, axis = 1))
 # Sum of arr(axis = 1) :  [120  75  84]
 ```
 
+### Reshape Numpy Arrays
+
+```python
+a = np.arange(6).reshape((3, 2))
+a
+# array([[0, 1],
+#       [2, 3],
+#       [4, 5]])
+
+# You can also use -1 as parameter to make the dimention automatically adapt to other dimensions and the number of elements.
+a.reshape(3,-1)     # the unspecified value is inferred to be 2
+array([[1, 2],
+       [3, 4],
+       [5, 6]])
+```
+
 
 
 ## Numpy Linear Algebra
 
-### Inner Product and Transpose
+### Inner Product and Transpose of NumPy arrays
 
 ```python
+import numpy as np
 x, y = load_data_set(filename)
 print(x.shape, x.T.shape) #(200, 2) (2, 200)
 np.dot(x.T,x).shape #(2, 2)
@@ -78,22 +98,25 @@ np.dot(square, square, square) #also accept more than two parameters
   #ValueError: output array is not acceptable (must have the right datatype, number of dimensions, and be a C-Array)
   ```
 
-### Inverse Matrix
+### Inverse Numpy 
 
 `np.linalg.inv(*target_matrix*)`
 
 ```python
-square = np.array([
+import numpy as np
+s = np.array([
     [2,3],
     [1,4]
 ])
-print(np.linalg.inv(square))
+print(np.linalg.inv(s))
 # [[ 0.8 -0.6]
 #  [-0.2  0.4]]
-print(np.dot(np.linalg.inv(square),square))
+print(np.dot(np.linalg.inv(s),s))
 # [[1. 0.]
 #  [0. 1.]]
 ```
+
+
 
 ## Python random
 
