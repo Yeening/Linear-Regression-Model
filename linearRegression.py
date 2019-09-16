@@ -38,9 +38,10 @@ def stochiastic_gradient_descent(x, y, learning_rate, num_iterations):
         np.random.shuffle(total)
         x = total.T[:2].T
         y = total.T[-1].T.reshape(-1,1)
-        # random smaple
-        i = random.randrange(0,x.shape[0],1)
-        theta = theta + learning_rate * (y[i] - x[i].T.dot(theta))* x[i]
+        for i in range(x.shape[0]):
+            # random smaple
+#             i = random.randrange(0,x.shape[0],1)
+            theta = theta + learning_rate * (y[i] - x[i].T.dot(theta))* x[i]
         thetas.append(theta)
     return thetas
 
@@ -67,11 +68,12 @@ def minibatch_gradient_descent(x, y, learning_rate, num_iterations, batch_size):
         np.random.shuffle(total)
         x = total.T[:2].T
         y = total.T[-1].T.reshape(-1,1)
-        # random smaple
-        i = random.randrange(0,x.shape[0],batch_size)
-        x_sam = x[i:i+batch_size]
-        y_sam = y[i:i+batch_size]
-        theta = theta + learning_rate * x_sam.T.dot(y_sam - x_sam.dot(theta))
+        for i in range(int(200/batch_size)):
+            # random smaple
+#             i = random.randrange(0,x.shape[0],batch_size)
+            x_sam = x[i:i+batch_size]
+            y_sam = y[i:i+batch_size]
+            theta = theta + learning_rate * x_sam.T.dot(y_sam - x_sam.dot(theta))
         thetas.append(theta)
     return thetas
 
@@ -105,6 +107,24 @@ def plot_training_errors(x, y, thetas, title):
     plt.title(title)
     plt.show()
 
+# Given a list of thetas one per epoch
+# this creates a plot of epoch vs training error
+def plot_training_errors(x, y, thetas, title):
+    losses = []
+    epochs = []
+    losses = []
+    epoch_num = 1
+    for theta in thetas:
+        losses.append(get_loss(y, predict(x, theta)))
+        epochs.append(epoch_num)
+        epoch_num += 1
+    plt.plot(epochs, losses)
+    plt.xlabel("epoch")
+    plt.ylabel("loss")
+    plt.title(title)
+    plt.savefig("./imgs/"+(title)+'.png')
+    plt.show()
+    
 # Given x, y, y_predict and title,
 # this creates a plot
 def plot(x, y, theta, title):
@@ -115,8 +135,9 @@ def plot(x, y, theta, title):
     plt.xlabel("x")
     plt.ylabel("y")
     plt.title(title)
+    plt.savefig("./imgs/"+(title)+'.png')
     plt.show()
-    
+
 if __name__ == "__main__":
     x, y = load_data_set('regression-data.txt')
     # plot
@@ -130,16 +151,16 @@ if __name__ == "__main__":
     plot(x, y, theta, "Normal Equation Best Fit")
 
     # You should try multiple non-zero learning rates and  multiple different (non-zero) number of iterations
-    thetas = gradient_descent(x, y, learning_rate = 0.0001, num_iterations = 1000) 
+    thetas = gradient_descent(x, y, learning_rate = 0.001, num_iterations = 100) 
     plot(x, y, thetas[-1], "Gradient Descent Best Fit")
     plot_training_errors(x, y, thetas, "Gradient Descent Mean Epoch vs Training Loss")
 
     # You should try multiple non-zero learning rates and  multiple different (non-zero) number of iterations
-    thetas = stochiastic_gradient_descent(x, y, learning_rate = 0.006, num_iterations = 2000) # Try different learning rates and number of iterations
+    thetas = stochiastic_gradient_descent(x, y, learning_rate = 0.001, num_iterations = 100) # Try different learning rates and number of iterations
     plot(x, y, thetas[-1], "Stochiastic Gradient Descent Best Fit")
     plot_training_errors(x, y, thetas, "Stochiastic Gradient Descent Mean Epoch vs Training Loss")
-
+# 
     # You should try multiple non-zero learning rates and  multiple different (non-zero) number of iterations
-    thetas = minibatch_gradient_descent(x, y, learning_rate = 0.006, num_iterations = 2000, batch_size = 15)
+    thetas = minibatch_gradient_descent(x, y, learning_rate = 0.001, num_iterations = 100, batch_size = 20)
     plot(x, y, thetas[-1], "Minibatch Gradient Descent Best Fit")
     plot_training_errors(x, y, thetas, "Minibatch Gradient Descent Mean Epoch vs Training Loss")
